@@ -46,6 +46,7 @@ const createTables = async () => {
                      )`;
 
   try {
+    // updated on tables
     const quizTable = await connection.query(CREATE_QUIZ_TABLE_QUERY);
     const questionTable = await connection.query(CREATE_QUESTIONS_TABLE_QUERY);
     const optionTable = await connection.query(CREATE_OPTIONS_TABLE_QUERY);
