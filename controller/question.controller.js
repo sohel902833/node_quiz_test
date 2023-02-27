@@ -23,7 +23,7 @@ const createQuestion = async (req, res, next) => {
         `(\'${questionId}\',\'${option?.option}\',\'${option?.isCorrect}\')`
     );
     const INSERT_OPTIONS_QUERY =
-      `INSERT INTO question_options(\`questionId\`, \`option\`,\`isCorrect\`) VALUES` +
+      `INSERT INTO question_options(\`questionId\`, \`optionName\`,\`isCorrect\`) VALUES` +
       optionLastQueries?.join(",");
 
     const insertOptions = await connection.query(INSERT_OPTIONS_QUERY);

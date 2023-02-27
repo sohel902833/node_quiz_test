@@ -33,15 +33,15 @@ const createTables = async () => {
                      questionId INT(10) PRIMARY KEY AUTO_INCREMENT,
                      quizId INT(10) NOT NULL,
                      question varchar(200) NOT NULL,
-                     mandatory BOOLEAN,
+                     mandatory INT(10),
                      FOREIGN KEY (quizId) REFERENCES quizes(quizId)
                      )`;
   const CREATE_OPTIONS_TABLE_QUERY = `
                  CREATE TABLE if not exists question_options(
                      optionId INT(10) PRIMARY KEY AUTO_INCREMENT,
                      questionId INT(10) NOT NULL,
-                     option varchar(200) NOT NULL,
-                     isCorrect BOOLEAN,
+                     optionName varchar(200) NOT NULL,
+                     isCorrect INT(10),
                      FOREIGN KEY (questionId) REFERENCES questions(questionId)
                      )`;
 
@@ -51,6 +51,7 @@ const createTables = async () => {
     const optionTable = await connection.query(CREATE_OPTIONS_TABLE_QUERY);
   } catch (err) {
     console.log("Table Create Failed");
+    console.log(err);
   }
 };
 

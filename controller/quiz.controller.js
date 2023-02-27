@@ -49,7 +49,7 @@ const createFullQuiz = async (req, res, next) => {
           `(\'${questionId}\',\'${option?.option}\',\'${option?.isCorrect}\')`
       );
       const INSERT_OPTIONS_QUERY =
-        `INSERT INTO question_options(\`questionId\`, \`option\`,\`isCorrect\`) VALUES` +
+        `INSERT INTO question_options(\`questionId\`, \`optionName\`,\`isCorrect\`) VALUES` +
         optionLastQueries?.join(",");
 
       const insertOptions = await connection.query(INSERT_OPTIONS_QUERY);
@@ -113,7 +113,7 @@ const editQuiz = async (req, res, next) => {
 const getAllQuiz = async (req, res, next) => {
   try {
     const SELECT_QUIZ_QUERY = `
-     SELECT quizes.quizId, quizes.quizName, quizes.description, questions.questionId, questions.question, IF(questions.mandatory, 'true', 'false') mandatory, question_options.optionId,question_options.option, IF(question_options.isCorrect, 'true', 'false') isCorrect 
+     SELECT quizes.quizId, quizes.quizName, quizes.description, questions.questionId, questions.question, IF(questions.mandatory, 'true', 'false') mandatory, question_options.optionId,question_options.optionName, IF(question_options.isCorrect, 'true', 'false') isCorrect 
     FROM quizes
     JOIN questions ON quizes.quizId = questions.quizId
     JOIN question_options ON questions.questionId = question_options.questionId;
@@ -154,15 +154,15 @@ const getAllQuiz = async (req, res, next) => {
               if (optionExists === -1) {
                 optionList.push({
                   optionId: option?.optionId,
-                  option: option?.option,
-                  isCorrect: option?.isCorrect,
+                  option: option?.optionName,
+                  isCorrect: option?.isCorrect === "true" ? true : false,
                 });
               }
             });
 
             questionList.push({
               questionId: question?.questionId,
-              mandatory: question?.mandatory,
+              mandatory: question?.mandatory === "true" ? true : false,
               question: question?.question,
               options: optionList,
             });
@@ -193,7 +193,7 @@ const getSingleQuiz = async (req, res, next) => {
   try {
     const quizId = req.params.quizId;
     const SELECT_QUIZ_QUERY = `
-    SELECT quizes.quizId, quizes.quizName, quizes.description, questions.questionId, questions.question, IF(questions.mandatory, 'true', 'false') mandatory, question_options.optionId,question_options.option, IF(question_options.isCorrect, 'true', 'false') isCorrect 
+    SELECT quizes.quizId, quizes.quizName, quizes.description, questions.questionId, questions.question, IF(questions.mandatory, 'true', 'false') mandatory, question_options.optionId,question_options.optionName, IF(question_options.isCorrect, 'true', 'false') isCorrect 
     FROM quizes
     JOIN questions ON quizes.quizId = questions.quizId
     JOIN question_options ON questions.questionId = question_options.questionId
@@ -235,15 +235,15 @@ const getSingleQuiz = async (req, res, next) => {
               if (optionExists === -1) {
                 optionList.push({
                   optionId: option?.optionId,
-                  option: option?.option,
-                  isCorrect: option?.isCorrect,
+                  option: option?.optionName,
+                  isCorrect: option?.isCorrect === "true" ? true : false,
                 });
               }
             });
 
             questionList.push({
               questionId: question?.questionId,
-              mandatory: question?.mandatory,
+              mandatory: question?.mandatory === "true" ? true : false,
               question: question?.question,
               options: optionList,
             });
